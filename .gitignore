@@ -1,0 +1,4 @@
+media/
+model/__pycache__/
+SKP/__pycache__/
+*.py[cod]
