@@ -18,6 +18,8 @@ from django.shortcuts import render
 import tensorflow as tf
 import numpy as np
 
+from django.http import JsonResponse
+
 # Create your views here.
 
 
@@ -38,17 +40,14 @@ def status(img):
 
 def FormView(request):
     if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
 
-        # if form.is_valid():
+        print(request.FILES)
         img = request.FILES['image']
         file_name = "pic.jpg"
         file_name_2 = default_storage.save(file_name, img)
         file_url = os.path.join(BASE_DIR, 'media/', file_name_2)
-        # original = load_img(file_url, target_size=(224, 224))
         original = load_img(file_url, target_size=(28, 28))
         ar = img_to_array(original)
-        # ar = ar.reshape(1, 224, 224, 3)
         ar = ar.reshape(1, 28, 28, 3)
 
         predictions = SKP_MODEL.predict(ar)
@@ -56,7 +55,8 @@ def FormView(request):
 
         index = np.argmax(predictions[0])
 
-        return render(request, 'results.html', {'data': str(CLASSES[index])})
+        # return render(request, 'results.html', {'data': str(CLASSES[index])})
+        return JsonResponse({"index": str(index), 'class': str(CLASSES[index])})
 
     form = ImageForm()
     return render(request, 'form.html', {"form": form})

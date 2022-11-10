@@ -15,7 +15,7 @@
 
   <body>
     <form method="post" enctype="multipart/form-data" class="px-4 mt-4">
-      {% csrf_token %} {% comment %} {{ form.as_p }} {% endcomment %}
+      {% csrf_token %} {{ form.as_p }}
       <div class="mb-3">
         <label for="image" class="form-label">Default file input example</label>
         <input class="form-control" type="file" name="image" />
